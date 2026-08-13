@@ -142,7 +142,7 @@ bloodDonor/
 
 ### Prerequisites
 - Node.js (`>=18.x`)
-- MongoDB running locally on `mongodb://127.0.0.1:27017` or a MongoDB Atlas connection string.
+- MongoDB running locally on `mongodb://127.0.0.1:27017` (or via Docker Compose).
 
 ### 1. Environment Setup
 

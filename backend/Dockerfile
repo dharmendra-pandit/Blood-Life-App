@@ -8,10 +8,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install Dependencies
-RUN  npm install
+RUN npm ci --omit=dev || npm install
 
 # Copy Source Code 
 COPY . .
 
+# Expose Application Port
+EXPOSE 5000
+
 # Start Command
-CMD ["npm","start"]
+CMD ["npm", "start"]
