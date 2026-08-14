@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { Save, UserCircle } from 'lucide-react'
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
-  const [profile, setProfile] = useState(null)
+  const [, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -27,7 +27,7 @@ const Dashboard = () => {
         // Backend wraps: { success, message, data }
         setProfile(data.data)
         setFormData(data.data)
-      } catch (error) {
+      } catch {
         console.log('No profile found, user needs to create one.')
       } finally {
         setLoading(false)

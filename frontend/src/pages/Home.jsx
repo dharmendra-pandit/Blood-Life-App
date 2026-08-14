@@ -1,7 +1,6 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Droplet, Heart, Activity, Search, ShieldCheck } from 'lucide-react'
+import { Heart, Activity, Search, ShieldCheck } from 'lucide-react'
 
 const Home = () => {
   return (

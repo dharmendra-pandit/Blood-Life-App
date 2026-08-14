@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 import {
@@ -15,7 +15,7 @@ import { motion } from 'framer-motion'
 const EmergencyRequests = () => {
   const { user } = useAuth()
   const [requests, setRequests] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -31,20 +31,37 @@ const EmergencyRequests = () => {
   })
 
   const fetchRequests = async () => {
-    setLoading(true)
     try {
       const { data } = await axios.get('/api/requests')
-      // Backend wraps: { success, message, data: { requests, pagination } }
       setRequests(data.data?.requests ?? [])
     } catch (error) {
       console.error('Failed to fetch requests', error)
-    } finally {
-      setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchRequests()
+    let isSubscribed = true
+    axios
+      .get('/api/requests')
+      .then(({ data }) => {
+        if (isSubscribed) {
+          setRequests(data.data?.requests ?? [])
+        }
+      })
+      .catch((error) => {
+        if (isSubscribed) {
+          console.error('Failed to fetch requests', error)
+        }
+      })
+      .finally(() => {
+        if (isSubscribed) {
+          setLoading(false)
+        }
+      })
+
+    return () => {
+      isSubscribed = false
+    }
   }, [])
 
   const handleChange = (e) => {

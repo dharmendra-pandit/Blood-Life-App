@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Search, MapPin, Droplet, Phone, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -11,27 +11,27 @@ const SearchDonors = () => {
     city: '',
   })
 
-  const fetchDonors = async () => {
-    setLoading(true)
-    try {
-      const queryParams = new URLSearchParams()
-      if (filters.bloodGroup)
-        queryParams.append('bloodGroup', filters.bloodGroup)
-      if (filters.city) queryParams.append('city', filters.city)
-
-      const { data } = await axios.get(
-        `/api/donors?${queryParams.toString()}`,
-      )
-      // Backend wraps: { success, message, data: { donors, pagination } }
-      setDonors(data.data?.donors ?? [])
-    } catch (error) {
-      console.error('Error fetching donors:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
+    const fetchDonors = async () => {
+      setLoading(true)
+      try {
+        const queryParams = new URLSearchParams()
+        if (filters.bloodGroup)
+          queryParams.append('bloodGroup', filters.bloodGroup)
+        if (filters.city) queryParams.append('city', filters.city)
+
+        const { data } = await axios.get(
+          `/api/donors?${queryParams.toString()}`,
+        )
+        // Backend wraps: { success, message, data: { donors, pagination } }
+        setDonors(data.data?.donors ?? [])
+      } catch (error) {
+        console.error('Error fetching donors:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     // Initial fetch with debounce to prevent too many calls on typing
     const timeoutId = setTimeout(() => {
       fetchDonors()
