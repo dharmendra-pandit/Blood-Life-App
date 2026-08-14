@@ -3,6 +3,7 @@ import api from '../services/api'
 
 const AuthContext = createContext()
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext)
 }
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         // Backend wraps responses: { success, message, data }
         const { data } = await api.get('/api/auth/profile')
         setUser(data.data)
-      } catch (error) {
+      } catch {
         // 401 is expected when not logged in — silently clear user
         setUser(null)
       } finally {

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { Save, UserCircle } from 'lucide-react'
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
-  const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -25,9 +24,8 @@ const Dashboard = () => {
       try {
         const { data } = await axios.get('/api/donors/profile')
         // Backend wraps: { success, message, data }
-        setProfile(data.data)
         setFormData(data.data)
-      } catch (error) {
+      } catch {
         console.log('No profile found, user needs to create one.')
       } finally {
         setLoading(false)
@@ -48,9 +46,8 @@ const Dashboard = () => {
     e.preventDefault()
     setMessage('')
     try {
-      const { data } = await axios.post('/api/donors/profile', formData)
+      await axios.post('/api/donors/profile', formData)
       // Backend wraps: { success, message, data }
-      setProfile(data.data)
       setMessage('Profile saved successfully!')
     } catch (error) {
       setMessage(error.response?.data?.message || 'Error saving profile')
