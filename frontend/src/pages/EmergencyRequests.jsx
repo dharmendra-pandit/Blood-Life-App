@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 import {
@@ -44,7 +44,11 @@ const EmergencyRequests = () => {
   }
 
   useEffect(() => {
-    fetchRequests()
+    const timeoutId = setTimeout(() => {
+      fetchRequests()
+    }, 0)
+
+    return () => clearTimeout(timeoutId)
   }, [])
 
   const handleChange = (e) => {
